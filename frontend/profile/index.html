@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Profile</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f7fbff;
+margin:0
+}
+.topbar{
+background:white;
+padding:20px 50px;
+display:flex;
+justify-content:space-between
+}
+.wrapper{
+max-width:1300px;
+margin:auto;
+padding:50px
+}
+.profile{
+background:white;
+padding:40px;
+border-radius:30px
+}
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin:30px 0
+}
+.stat{
+background:#f8fbff;
+padding:25px;
+border-radius:20px
+}
+.stat h3{
+font-size:32px;
+color:#2563eb
+}
+.tabs{
+display:flex;
+gap:12px;
+margin-bottom:25px
+}
+.tab{
+padding:12px 18px;
+background:#eef2ff;
+border-radius:12px;
+cursor:pointer
+}
+.active{
+background:#2563eb;
+color:white
+}
+.panel{
+background:#f8fbff;
+padding:25px;
+border-radius:25px
+}
+.property-card{
+display:grid;
+grid-template-columns:240px 1fr;
+background:white;
+border-radius:22px;
+overflow:hidden;
+margin-bottom:18px
+}
+.property-card img{
+width:100%;
+height:180px;
+object-fit:cover
+}
+.info{
+padding:25px
+}
+.btn{
+padding:12px 15px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:10px;
+margin-top:10px
+}
+.empty{
+padding:120px;
+text-align:center
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+<h2>EstateFlow</h2>
+<a href="../index.html">Back</a>
+</nav>
+
+<div class="wrapper">
+<div class="profile">
+
+<h1>Alex Morgan</h1>
+
+<div class="stats">
+<div class="stat">
+<h3 id="savedCount">0</h3>
+<p>Saved</p>
+</div>
+
+<div class="stat">
+<h3 id="contactCount">0</h3>
+<p>Contacted</p>
+</div>
+
+<div class="stat">
+<h3 id="purchaseCount">0</h3>
+<p>Purchased</p>
+</div>
+
+<div class="stat">
+<h3 id="activityCount">0</h3>
+<p>Activity</p>
+</div>
+</div>
+
+
+<div class="tabs">
+
+<div
+id="bookmarkTab"
+class="tab active"
+onclick="loadBookmarks()">
+Bookmarks
+</div>
+
+<div
+id="contactTab"
+class="tab"
+onclick="loadContacts()">
+Contacts
+</div>
+
+<div
+id="purchaseTab"
+class="tab"
+onclick="loadPurchases()">
+Purchases
+</div>
+
+</div>
+
+
+<div
+id="content"
+class="panel">
+</div>
+
+</div>
+</div>
+
+<script>
+
+function active(id){
+
+document
+.querySelectorAll(".tab")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+function card(p,label){
+
+return `
+<div class="property-card">
+
+<img src="../${p.image}">
+
+<div class="info">
+
+<h2>${p.name}</h2>
+
+<p>
+₹${(p.price/10000000).toFixed(2)} Cr
+</p>
+
+<p>${label}</p>
+
+<a
+href="../property/index.html?id=${p.id}">
+<button class="btn">
+View
+</button>
+</a>
+
+</div>
+</div>
+`;
+}
+
+async function loadStats(){
+
+let r=
+await fetch(
+"http://localhost:5000/api/dashboard/1"
+);
+
+let d=await r.json();
+
+savedCount.innerText=d.saved;
+contactCount.innerText=d.contacted;
+purchaseCount.innerText=d.purchased;
+activityCount.innerText=
+d.saved+d.contacted+d.purchased;
+
+}
+
+async function loadBookmarks(){
+
+active("bookmarkTab");
+
+let r=
+await fetch(
+"http://localhost:5000/api/bookmarks/1"
+);
+
+let data=
+await r.json();
+
+if(!data.length){
+content.innerHTML=
+'<div class="empty">No Bookmarks</div>';
+return;
+}
+
+content.innerHTML=
+data.map(
+x=>card(x,"Saved")
+).join("");
+
+}
+
+async function loadContacts(){
+
+active("contactTab");
+
+let r=
+await fetch(
+"http://localhost:5000/api/contacts/1"
+);
+
+let data=
+await r.json();
+
+if(!data.length){
+content.innerHTML=
+'<div class="empty">No Contacts</div>';
+return;
+}
+
+content.innerHTML=
+data.map(
+x=>card(x,"Contacted")
+).join("");
+
+}
+
+async function loadPurchases(){
+
+active("purchaseTab");
+
+let r=
+await fetch(
+"http://localhost:5000/api/purchases/1"
+);
+
+let data=
+await r.json();
+
+if(!data.length){
+content.innerHTML=
+'<div class="empty">No Purchases</div>';
+return;
+}
+
+content.innerHTML=
+data.map(
+x=>card(x,"Purchased")
+).join("");
+
+}
+
+loadStats();
+loadBookmarks();
+
+</script>
+
+</body>
+</html>
