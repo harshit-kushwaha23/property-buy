@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Property Details</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(to bottom,#f8fbff,#eef3f8);
+color:#1f2937;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.topbar{
+height:74px;
+background:rgba(255,255,255,.92);
+backdrop-filter:blur(12px);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 60px;
+position:sticky;
+top:0;
+z-index:50;
+box-shadow:0 4px 20px rgba(0,0,0,.04);
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+color:#2563eb;
+}
+
+.back{
+padding:12px 18px;
+background:white;
+border-radius:14px;
+box-shadow:0 4px 10px rgba(0,0,0,.06);
+}
+
+.wrapper{
+max-width:1400px;
+margin:auto;
+padding:40px 60px 80px;
+}
+
+.container{
+display:grid;
+grid-template-columns:1.4fr .8fr;
+gap:35px;
+}
+
+.gallery{
+background:white;
+border-radius:30px;
+padding:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.hero-slider{
+position:relative;
+overflow:hidden;
+border-radius:25px;
+}
+
+.hero-slider img{
+width:100%;
+height:620px;
+object-fit:cover;
+display:block;
+transition:0.5s;
+}
+
+.slide-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:55px;
+height:55px;
+border:none;
+border-radius:50%;
+background:rgba(255,255,255,.88);
+backdrop-filter:blur(10px);
+font-size:28px;
+font-weight:700;
+cursor:pointer;
+box-shadow:0 5px 20px rgba(0,0,0,.12);
+transition:.2s;
+z-index:10;
+}
+
+.slide-btn:hover{
+transform:translateY(-50%) scale(1.08);
+}
+
+.prev{
+left:18px;
+}
+
+.next{
+right:18px;
+}
+
+.counter{
+position:absolute;
+right:18px;
+bottom:18px;
+background:rgba(17,24,39,.72);
+color:white;
+padding:10px 16px;
+border-radius:30px;
+font-size:14px;
+}
+
+.thumb-row{
+display:flex;
+gap:12px;
+margin-top:18px;
+overflow:auto;
+}
+
+.thumb{
+width:140px;
+height:95px;
+border-radius:16px;
+overflow:hidden;
+cursor:pointer;
+border:3px solid transparent;
+transition:.2s;
+flex-shrink:0;
+}
+
+.thumb.active{
+border-color:#2563eb;
+}
+
+.thumb img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.info{
+position:sticky;
+top:110px;
+height:fit-content;
+}
+
+.info-card{
+background:white;
+padding:35px;
+border-radius:30px;
+box-shadow:0 12px 30px rgba(0,0,0,.05);
+}
+
+.tag{
+display:inline-block;
+padding:10px 15px;
+background:#eff6ff;
+color:#2563eb;
+font-weight:600;
+border-radius:30px;
+margin-bottom:18px;
+}
+
+h1{
+font-size:40px;
+line-height:1.15;
+margin-bottom:12px;
+}
+
+.location{
+color:#64748b;
+margin-bottom:20px;
+font-size:18px;
+}
+
+.price{
+font-size:48px;
+font-weight:800;
+color:#2563eb;
+margin-bottom:28px;
+}
+
+.feature-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:28px;
+}
+
+.feature{
+background:#f8fbff;
+padding:18px;
+border-radius:18px;
+}
+
+.feature span{
+display:block;
+font-size:13px;
+color:#64748b;
+margin-bottom:6px;
+}
+
+.feature strong{
+font-size:20px;
+}
+
+.section-title{
+font-size:20px;
+font-weight:700;
+margin-bottom:14px;
+}
+
+.amenities{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+margin-bottom:30px;
+}
+
+.amenity{
+padding:10px 14px;
+background:#f1f5f9;
+border-radius:30px;
+font-size:14px;
+}
+
+.actions{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+button{
+border:none;
+cursor:pointer;
+font-size:16px;
+font-weight:600;
+border-radius:16px;
+padding:16px;
+transition:.2s;
+}
+
+.primary{
+background:#2563eb;
+color:white;
+box-shadow:0 8px 20px rgba(37,99,235,.3);
+}
+
+.primary:hover{
+transform:translateY(-2px);
+}
+
+.secondary{
+background:#edf2f7;
+}
+
+.secondary:hover{
+background:#dfe7ef;
+}
+
+.desc{
+margin-top:35px;
+line-height:1.8;
+color:#475569;
+}
+
+.toast{
+position:fixed;
+right:30px;
+bottom:30px;
+background:#111827;
+color:white;
+padding:15px 20px;
+border-radius:14px;
+opacity:0;
+transform:translateY(20px);
+transition:.35s;
+}
+
+.toast.show{
+opacity:1;
+transform:translateY(0);
+}
+
+@media(max-width:1050px){
+.container{
+grid-template-columns:1fr;
+}
+.hero-slider img{
+height:500px;
+}
+.info{
+position:relative;
+top:auto;
+}
+}
+
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+<div class="logo">EstateFlow</div>
+<a class="back" href="../index.html">
+← Back
+</a>
+</nav>
+
+<div class="wrapper">
+
+<div class="container">
+
+<div class="gallery">
+
+<div class="hero-slider">
+
+<button class="slide-btn prev"
+onclick="prev()">
+<
+</button>
+
+<img id="img">
+
+<button class="slide-btn next"
+onclick="next()">
+>
+</button>
+
+<div class="counter" id="counter"></div>
+
+</div>
+
+<div class="thumb-row" id="thumbs"></div>
+
+</div>
+
+
+<div class="info">
+<div class="info-card">
+
+<div class="tag">
+Premium Listing
+</div>
+
+<h1 id="name"></h1>
+
+<div class="location" id="city"></div>
+
+<div class="price" id="price"></div>
+
+<div class="feature-grid" id="features"></div>
+
+<div class="section-title">
+Amenities
+</div>
+
+<div class="amenities">
+<div class="amenity">Pool</div>
+<div class="amenity">Smart Home</div>
+<div class="amenity">Parking</div>
+<div class="amenity">Gym</div>
+<div class="amenity">Security</div>
+<div class="amenity">Terrace</div>
+</div>
+
+<div class="actions">
+<button class="primary" onclick="buy()">
+Buy Property
+</button>
+
+<button class="secondary" onclick="bookmark()">
+♡ Bookmark
+</button>
+
+<button class="secondary" onclick="contactOwner()">
+Contact Owner
+</button>
+</div>
+
+<div class="desc">
+Luxury curated property with premium finishes, natural light, modern interiors and investment-grade location.
+Designed as a frontend simulation for a real estate platform.
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+const properties=[
+{id:1,name:"Ocean View Penthouse",price:"₹3.8 Cr",images:["../images/house1.jpg","../images/house2.jpg","../images/house3.jpg"],beds:4,baths:4,area:3200,city:"Mumbai"},
+{id:2,name:"Luxury Urban Flat",price:"₹1.2 Cr",images:["../images/house4.jpg","../images/house5.jpg","../images/house6.jpg"],beds:3,baths:2,area:1650,city:"Pune"},
+{id:3,name:"Palm Grove Villa",price:"₹2.5 Cr",images:["../images/house7.jpg","../images/house8.jpg"],beds:5,baths:4,area:4000,city:"Goa"},
+{id:4,name:"Skyline Penthouse",price:"₹3.4 Cr",images:["../images/house10.jpg","../images/house11.jpg"],beds:4,baths:4,area:3000,city:"Delhi"},
+{id:5,name:"Lakeview Villa",price:"₹2.9 Cr",images:["../images/house12.jpg","../images/house13.jpg"],beds:5,baths:5,area:4500,city:"Bangalore"},
+{id:6,name:"Minimal Smart Flat",price:"₹95 L",images:["../images/house14.jpg","../images/house15.jpg"],beds:2,baths:2,area:1300,city:"Hyderabad"},
+{id:7,name:"Elite Townhouse",price:"₹1.7 Cr",images:["../images/house16.jpg","../images/house17.jpg"],beds:3,baths:3,area:2100,city:"Ahmedabad"},
+{id:8,name:"Garden Flat",price:"₹85 L",images:["../images/house18.jpg","../images/house19.jpg"],beds:2,baths:2,area:1200,city:"Chennai"},
+{id:9,name:"Royal Villa",price:"₹3.1 Cr",images:["../images/house20.jpg","../images/house21.jpg"],beds:6,baths:5,area:5000,city:"Jaipur"},
+{id:10,name:"Luxury Flat Central",price:"₹1.4 Cr",images:["../images/house22.jpg","../images/house23.jpg"],beds:3,baths:2,area:1700,city:"Mumbai"},
+{id:11,name:"Riverfront Villa",price:"₹2.6 Cr",images:["../images/house24.jpg","../images/house25.jpg"],beds:4,baths:4,area:3800,city:"Surat"},
+{id:12,name:"Modern Townhouse",price:"₹1.55 Cr",images:["../images/house26.jpg","../images/house27.jpg"],beds:3,baths:3,area:2200,city:"Indore"},
+{id:13,name:"Elite Penthouse",price:"₹3.6 Cr",images:["../images/house28.jpg","../images/house29.jpg"],beds:5,baths:5,area:3400,city:"Mumbai"},
+{id:14,name:"Budget Smart Flat",price:"₹75 L",images:["../images/house30.jpg","../images/house31.jpg"],beds:2,baths:2,area:1100,city:"Nagpur"},
+{id:15,name:"Premium Family Villa",price:"₹2.3 Cr",images:["../images/house32.jpg","../images/house33.jpg"],beds:4,baths:4,area:3700,city:"Pune"}
+];
+
+
+let id=new URLSearchParams(location.search).get("id")||1;
+let p=properties.find(x=>x.id==id);
+
+let i=0;
+let autoSlide;
+
+function show(){
+
+img.src=p.images[i];
+
+counter.textContent=
+(i+1)+" / "+p.images.length;
+
+name.textContent=p.name;
+price.textContent=p.price;
+city.textContent="📍 "+p.city;
+
+features.innerHTML=`
+<div class="feature">
+<span>Bedrooms</span>
+<strong>${p.beds}</strong>
+</div>
+
+<div class="feature">
+<span>Bathrooms</span>
+<strong>${p.baths}</strong>
+</div>
+
+<div class="feature">
+<span>Area</span>
+<strong>${p.area} sqft</strong>
+</div>
+
+<div class="feature">
+<span>Property Type</span>
+<strong>Luxury</strong>
+</div>
+`;
+
+thumbs.innerHTML=p.images.map((src,index)=>`
+<div 
+class="thumb ${index===i?'active':''}" 
+onclick="goSlide(${index})">
+<img src="${src}">
+</div>
+`).join("");
+
+}
+
+function next(){
+i=(i+1)%p.images.length;
+show();
+resetAuto();
+}
+
+function prev(){
+i=(i-1+p.images.length)%p.images.length;
+show();
+resetAuto();
+}
+
+function goSlide(index){
+i=index;
+show();
+resetAuto();
+}
+
+function startAuto(){
+autoSlide=setInterval(()=>{
+i=(i+1)%p.images.length;
+show();
+},3000);
+}
+
+function resetAuto(){
+clearInterval(autoSlide);
+startAuto();
+}
+
+function toastMsg(text){
+let t=document.getElementById("toast");
+t.textContent=text;
+t.classList.add("show");
+
+setTimeout(()=>{
+t.classList.remove("show");
+},2500);
+}
+
+function bookmark(){
+let b=JSON.parse(
+localStorage.getItem("bookmarks")
+)||[];
+
+if(!b.includes(p.id)){
+b.push(p.id);
+localStorage.setItem(
+"bookmarks",
+JSON.stringify(b)
+);
+}
+
+toastMsg("Property Bookmarked");
+}
+
+function contactOwner(){
+let a=JSON.parse(
+localStorage.getItem("activity")
+)||[];
+
+a.push("Contacted owner for "+p.name);
+
+localStorage.setItem(
+"activity",
+JSON.stringify(a)
+);
+
+toastMsg("Owner Contact Request Sent");
+}
+
+function buy(){
+let a=JSON.parse(
+localStorage.getItem("activity")
+)||[];
+
+a.push("Purchased "+p.name);
+
+localStorage.setItem(
+"activity",
+JSON.stringify(a)
+);
+
+toastMsg("Purchase Simulated");
+}
+
+show();
+startAuto();
+
+</script>
+
+</body>
+</html>
